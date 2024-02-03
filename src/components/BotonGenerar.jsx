@@ -7,14 +7,14 @@ const ContenedorBotones = () => {
   const [botonesDeshabilitados, setBotonesDeshabilitados] = useState(Array(5).fill(false));
 
   useEffect(() => {
-
+    // Este efecto se ejecuta cuando se genera un número aleatorio
     if (numeroGenerado !== null) {
-    
+      // Limpia la selección del botón después de 1 segundo
       const limpiarSeleccion = setTimeout(() => {
         setBotonSeleccionado(null);
       }, 1000);
 
-    
+      // Limpia el temporizador al desmontar el componente o al seleccionar otro botón
       return () => clearTimeout(limpiarSeleccion);
     }
   }, [numeroGenerado]);
@@ -40,14 +40,29 @@ const ContenedorBotones = () => {
         return nuevosBotonesDeshabilitados;
       });
 
- 
+      // Borra el número generado después de asignarlo a un botón
       setNumeroGenerado(null);
+    }
+  };
+
+  const compararNumeros = () => {
+    const numerosOrdenados = [...numerosGenerados].sort((a, b) => a - b);
+    
+    const numerosIguales = numerosOrdenados.every((num, index) => num === numerosGenerados[index]);
+
+    if (numerosIguales) {
+      alert('¡Has Ganado!');
+    } else {
+      alert('¡Has Perdido!');
     }
   };
 
   return (
     <div>
       <button onClick={generarNumeroAleatorio}>Generar Número Aleatorio</button>
+      <button onClick={compararNumeros} disabled={numeroGenerado === null}>
+        Comparar Números
+      </button>
       {numeroGenerado !== null && (
         <p>Número Aleatorio Generado: {numeroGenerado}</p>
       )}
